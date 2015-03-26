@@ -80,11 +80,6 @@ Style/IfUnlessModifier:
 Style/Next:
   Enabled: false
 
-# Offense count: 1
-# Configuration parameters: NamePrefix, NamePrefixBlacklist.
-Style/PredicateName:
-  Enabled: false
-
 # Offense count: 5
 # Configuration parameters: MaxSlashes.
 Style/RegexpLiteral:
