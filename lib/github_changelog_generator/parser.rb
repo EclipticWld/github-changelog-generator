@@ -167,7 +167,7 @@ module GitHubChangelogGenerator
       options
     end
   end
-  if __FILE__ == $0
+  if __FILE__ == $PROGRAM_NAME
     options = Parser.parse_options
     p options
   end
