@@ -77,11 +77,14 @@ module GitHubChangelogGenerator
         opts.on('--[no-]compare-link', 'Include compare link (Full Changelog) between older version and newer version. Default is true') do |v|
           options[:compare_link] = v
         end
-        opts.on('--include-labels  x,y,z', Array, 'Issues only with that labels will be included to changelog. Default is \'bug,enhancement\'') do |list|
+        opts.on('--include-labels x,y,z', Array, 'Issues only with that labels will be included to changelog. Default is \'bug,enhancement\'') do |list|
           options[:include_labels] = list
         end
-        opts.on('--exclude-labels  x,y,z', Array, 'Issues with that labels will be always excluded from changelog. Default is \'duplicate,question,invalid,wontfix\'') do |list|
+        opts.on('--exclude-labels x,y,z', Array, 'Issues with that labels will be always excluded from changelog. Default is \'duplicate,question,invalid,wontfix\'') do |list|
           options[:exclude_labels] = list
+        end
+        opts.on('--between-tags x,y,z', Array, 'Generate log between list of specified tags only') do |list|
+          options[:between_tags] = list
         end
         opts.on('--max-issues [NUMBER]', Integer, 'Max number of issues to fetch from GitHub. Default is unlimited') do |max|
           options[:max_issues] = max
@@ -170,5 +173,9 @@ module GitHubChangelogGenerator
 
       options
     end
+  end
+  if __FILE__ == $0
+    options = Parser.parse_options
+    p options
   end
 end
