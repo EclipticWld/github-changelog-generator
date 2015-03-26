@@ -7,8 +7,6 @@ module GitHubChangelogGenerator
   class Parser
     def self.parse_options
       options = {
-        tag1: nil,
-        tag2: nil,
         format: '%Y-%m-%d',
         output: 'CHANGELOG.md',
         exclude_labels: %w(duplicate question invalid wontfix),
@@ -158,11 +156,6 @@ module GitHubChangelogGenerator
       if !options[:user] || !options[:project]
         puts parser.banner
         exit
-      end
-
-      if ARGV[1]
-        options[:tag1] = ARGV[0]
-        options[:tag2] = ARGV[1]
       end
 
       if options[:verbose]

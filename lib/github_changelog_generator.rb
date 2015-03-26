@@ -181,27 +181,6 @@ module GitHubChangelogGenerator
 
       if @options[:unreleased_only]
         log += generate_log_between_tags(all_tags[0], nil)
-      elsif @options[:tag1] and @options[:tag2]
-        tag1 = @options[:tag1]
-        tag2 = @options[:tag2]
-        tags_strings = []
-        all_tags.each { |x| tags_strings.push(x['name']) }
-
-        if tags_strings.include?(tag1)
-          if tags_strings.include?(tag2)
-            to_a = tags_strings.map.with_index.to_a
-            hash = Hash[to_a]
-            index1 = hash[tag1]
-            index2 = hash[tag2]
-            log += generate_log_between_tags(all_tags[index1], all_tags[index2])
-          else
-            puts "Can't find tag #{tag2} -> exit"
-            exit
-          end
-        else
-          puts "Can't find tag #{tag1} -> exit"
-          exit
-        end
       else
         log += generate_log_for_all_tags
       end
