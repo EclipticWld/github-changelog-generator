@@ -9,6 +9,7 @@ require_relative 'github_changelog_generator/parser'
 require_relative 'github_changelog_generator/generator'
 require_relative 'github_changelog_generator/version'
 require_relative 'github_changelog_generator/reader'
+require_relative 'github_changelog_generator/fetcher'
 
 module GitHubChangelogGenerator
   class ChangelogGenerator
@@ -21,18 +22,7 @@ module GitHubChangelogGenerator
     def initialize
       @options = Parser.parse_options
 
-      fetch_github_token
-
-      github_options = { per_page: PER_PAGE_NUMBER }
-      github_options[:oauth_token] = @github_token unless @github_token.nil?
-      github_options[:endpoint] = options[:github_endpoint] unless options[:github_endpoint].nil?
-      github_options[:site] = options[:github_endpoint] unless options[:github_site].nil?
-
-      begin
-        @github = Github.new github_options
-      rescue
-        puts GH_RATE_LIMIT_EXCEEDED_MSG.yellow
-      end
+      @fetcher = GitHubChangelogGenerator::Fetcher.new @options
 
       @generator = Generator.new(@options)
 
@@ -307,17 +297,6 @@ module GitHubChangelogGenerator
       end
 
       tags
-    end
-
-    def fetch_github_token
-      env_var = @options[:token] ? @options[:token] : (ENV.fetch 'CHANGELOG_GITHUB_TOKEN', nil)
-
-      unless env_var
-        puts 'Warning: No token provided (-t option) and variable $CHANGELOG_GITHUB_TOKEN was not found.'.yellow
-        puts 'This script can make only 50 requests to GitHub API per hour without token!'.yellow
-      end
-
-      @github_token ||= env_var
     end
 
     def generate_log_between_tags(older_tag, newer_tag)
